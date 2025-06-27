@@ -24,7 +24,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm --filter lucide-react-native build
+        run: pnpm --filter @madeezi/lucide-react-native build
 
   test:
     runs-on: ubuntu-latest
@@ -40,4 +40,4 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Test
-        run: pnpm --filter lucide-react-native test
+        run: pnpm --filter @madeezi/lucide-react-native test

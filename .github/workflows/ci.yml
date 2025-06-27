@@ -9,7 +9,7 @@ on:
 
 jobs:
   create-release:
-    if: github.repository == 'lucide-icons/lucide' && startsWith(github.event.head_commit.message, 'feat(icons)')
+    if: github.repository == 'madeezi/lucide' && startsWith(github.event.head_commit.message, 'feat(icons)')
     runs-on: ubuntu-latest
     outputs:
       VERSION: ${{ steps.new-version.outputs.NEW_VERSION }}
@@ -65,7 +65,7 @@ jobs:
           generate_release_notes: true
 
   test-semantic-release:
-    if: github.repository == 'lucide-icons/lucide'
+    if: github.repository == 'madeezi/lucide'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -97,7 +97,7 @@ jobs:
           echo ${{ steps.semantic.outputs.new_release_patch_version }}
 
   start-release:
-    if: github.repository == 'lucide-icons/lucide'
+    if: github.repository == 'madeezi/lucide'
     needs: create-release
     uses: './.github/workflows/release.yml'
     secrets: inherit

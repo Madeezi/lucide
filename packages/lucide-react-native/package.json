@@ -1,14 +1,17 @@
 {
-  "name": "lucide-react-native",
-  "description": "A Lucide icon library package for React Native applications.",
+  "name": "@madeezi/lucide-react-native",
+  "description": "A Lucide icon library package for React Native applications - Madeezi version.",
   "version": "0.0.1",
   "license": "ISC",
   "homepage": "https://lucide.dev",
-  "bugs": "https://github.com/lucide-icons/lucide/issues",
+  "bugs": "https://github.com/madeezi/lucide/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lucide-icons/lucide.git",
+    "url": "https://github.com/madeezi/lucide.git",
     "directory": "packages/lucide-react-native"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "keywords": [
     "Lucide",
@@ -31,8 +34,27 @@
   "react-native": "dist/esm/lucide-react-native.js",
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "untitled",
+    "gmg"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/esm/lucide-react-native.js",
+      "require": "./dist/cjs/lucide-react-native.js",
+      "types": "./dist/lucide-react-native.d.ts"
+    },
+    "./untitled": {
+      "import": "./untitled/index.js",
+      "require": "./untitled/index.js",
+      "types": "./untitled/index.d.ts"
+    },
+    "./gmg": {
+      "import": "./gmg/index.js",
+      "require": "./gmg/index.js",
+      "types": "./gmg/index.d.ts"
+    }
+  },
   "scripts": {
     "build": "pnpm clean && pnpm copy:license && pnpm build:icons && pnpm build:bundles",
     "copy:license": "cp ../../LICENSE ./LICENSE",

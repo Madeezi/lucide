@@ -20,7 +20,7 @@ on:
 
 jobs:
   pre-release:
-    if: github.repository == 'lucide-icons/lucide' && contains('["ericfennis", "karsa-mistmere"]', github.actor)
+    if: github.repository == 'madeezi/lucide'
     runs-on: ubuntu-latest
     outputs:
       VERSION: ${{ steps.get_version.outputs.VERSION }}
@@ -35,27 +35,20 @@ jobs:
           VERSION_REF: ${{ inputs.version || github.event.inputs.version || github.ref }}
 
   release:
-    if: github.repository == 'lucide-icons/lucide'
+    if: github.repository == 'madeezi/lucide'
     runs-on: ubuntu-latest
     needs: pre-release
     permissions:
       id-token: write
+      contents: read
+      packages: write
     strategy:
       fail-fast: false
       matrix:
         package:
           [
-            'lucide',
-            'lucide-react',
-            'lucide-react-native',
-            'lucide-vue',
-            'lucide-vue-next',
-            'lucide-angular',
-            'lucide-preact',
-            'lucide-solid',
-            'lucide-svelte',
-            '@lucide/astro',
-            '@lucide/svelte',
+            '@madeezi/lucide-react',
+            '@madeezi/lucide-react-native',
           ]
     steps:
       - uses: actions/checkout@v4
@@ -68,8 +61,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Set Auth Token
-        run: npm config set //registry.npmjs.org/:_authToken ${{ inputs.NPM_TOKEN || secrets.NPM_TOKEN }}
+      - name: Set Auth Token for GitHub Packages
+        run: |
+          npm config set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
+          npm config set @madeezi:registry https://npm.pkg.github.com
 
       - name: Set new version
         run: pnpm --filter ${{ matrix.package }} version --new-version ${{ needs.pre-release.outputs.VERSION }} --no-git-tag-version
@@ -80,90 +75,9 @@ jobs:
       - name: Test
         run: pnpm --filter ${{ matrix.package }} test
 
-      - name: Publish
-        run: pnpm --filter ${{ matrix.package }} publish --access public --no-git-checks --ignore-scripts
+      - name: Publish to GitHub Packages
+        run: pnpm --filter ${{ matrix.package }} publish --registry https://npm.pkg.github.com --access public --no-git-checks --ignore-scripts
         env:
-          NPM_CONFIG_PROVENANCE: true
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  lucide-static:
-    if: github.repository == 'lucide-icons/lucide'
-    runs-on: ubuntu-latest
-    needs: [pre-release, lucide-font]
-    permissions:
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          cache: 'pnpm'
-          node-version-file: 'package.json'
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Set Auth Token
-        run: npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
-
-      - name: Set new version
-        run: pnpm --filter lucide-static version --new-version ${{ needs.pre-release.outputs.VERSION }} --no-git-tag-version
-
-      - name: Move Font
-        run: cp -r lucide-font packages/lucide-static/font
-
-      - name: Build
-        run: pnpm --filter lucide-static build
-
-      - name: Publish
-        run: pnpm --filter lucide-static publish --no-git-checks
-        env:
-          NPM_CONFIG_PROVENANCE: true
-
-  lucide-font:
-    if: github.repository == 'lucide-icons/lucide'
-    runs-on: ubuntu-latest
-    needs: pre-release
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          cache: 'pnpm'
-          node-version-file: 'package.json'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Outline svg Icons
-        run: pnpm build:outline-icons
-
-      - name: Create font in ./lucide-font
-        run: pnpm build:font
-
-      - name: 'Upload to Artifacts'
-        uses: actions/upload-artifact@v4
-        with:
-          name: lucide-font
-          path: lucide-font
-
-  post-release:
-    if: github.repository == 'lucide-icons/lucide'
-    runs-on: ubuntu-latest
-    needs: [pre-release, lucide-font]
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-      - name: Zip font and icons
-        run: |
-          zip -r lucide-font-${{ needs.pre-release.outputs.VERSION }}.zip lucide-font
-          zip -r lucide-icons-${{ needs.pre-release.outputs.VERSION }}.zip icons
-
-      - name: Release zip and fonts
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ needs.pre-release.outputs.VERSION }}
-          files: |
-            lucide-font-${{ needs.pre-release.outputs.VERSION }}.zip
-            lucide-icons-${{ needs.pre-release.outputs.VERSION }}.zip
