@@ -8,7 +8,6 @@ on:
 jobs:
   lint-filenames:
     name: Lint Filenames
-    if: github.repository == 'madeezi/lucide'
     runs-on: ubuntu-latest
     permissions:
       contents: read

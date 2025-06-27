@@ -1,4 +1,4 @@
-name: Release Packages
+name: Release Madeezi Lucide Packages
 
 on:
   push:
@@ -20,7 +20,6 @@ on:
 
 jobs:
   pre-release:
-    if: github.repository == 'madeezi/lucide'
     runs-on: ubuntu-latest
     outputs:
       VERSION: ${{ steps.get_version.outputs.VERSION }}
@@ -35,21 +34,19 @@ jobs:
           VERSION_REF: ${{ inputs.version || github.event.inputs.version || github.ref }}
 
   release:
-    if: github.repository == 'madeezi/lucide'
     runs-on: ubuntu-latest
     needs: pre-release
     permissions:
-      id-token: write
       contents: read
       packages: write
     strategy:
       fail-fast: false
       matrix:
-        package:
-          [
-            '@madeezi/lucide-react',
-            '@madeezi/lucide-react-native',
-          ]
+        include:
+          - package: 'lucide-react'
+            publish_name: '@madeezi/lucide'
+          - package: 'lucide-react-native'
+            publish_name: '@madeezi/lucide-react-native'
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -69,6 +66,12 @@ jobs:
       - name: Set new version
         run: pnpm --filter ${{ matrix.package }} version --new-version ${{ needs.pre-release.outputs.VERSION }} --no-git-tag-version
 
+      - name: Update package name and registry
+        run: |
+          cd packages/${{ matrix.package }}
+          npm pkg set name="${{ matrix.publish_name }}"
+          npm pkg set publishConfig.registry="https://npm.pkg.github.com"
+
       - name: Build
         run: pnpm --filter ${{ matrix.package }} build
 
@@ -76,8 +79,6 @@ jobs:
         run: pnpm --filter ${{ matrix.package }} test
 
       - name: Publish to GitHub Packages
-        run: pnpm --filter ${{ matrix.package }} publish --registry https://npm.pkg.github.com --access public --no-git-checks --ignore-scripts
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm --filter ${{ matrix.package }} publish --registry https://npm.pkg.github.com --no-git-checks --ignore-scripts
 
 
