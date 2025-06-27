@@ -66,19 +66,21 @@ jobs:
       - name: Set new version
         run: pnpm --filter ${{ matrix.package }} version --new-version ${{ needs.pre-release.outputs.VERSION }} --no-git-tag-version
 
-      - name: Update package name and registry
-        run: |
-          cd packages/${{ matrix.package }}
-          npm pkg set name="${{ matrix.publish_name }}"
-          npm pkg set publishConfig.registry="https://npm.pkg.github.com"
-
       - name: Build
         run: pnpm --filter ${{ matrix.package }} build
 
       - name: Test
         run: pnpm --filter ${{ matrix.package }} test
 
+      - name: Update package name and registry for publishing
+        run: |
+          cd packages/${{ matrix.package }}
+          npm pkg set name="${{ matrix.publish_name }}"
+          npm pkg set publishConfig.registry="https://npm.pkg.github.com"
+
       - name: Publish to GitHub Packages
-        run: pnpm --filter ${{ matrix.package }} publish --registry https://npm.pkg.github.com --no-git-checks --ignore-scripts
+        run: |
+          cd packages/${{ matrix.package }}
+          npm publish --registry https://npm.pkg.github.com --access public
 
 
