@@ -29,8 +29,47 @@
   "unpkg": "dist/umd/lucide-react.min.js",
   "typings": "dist/lucide-react.d.ts",
   "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/lucide-react.d.ts",
+      "import": "./dist/esm/lucide-react.js",
+      "require": "./dist/cjs/lucide-react.js"
+    },
+    "./icons": {
+      "types": "./dist/lucide-react.d.ts",
+      "import": "./dist/esm/lucide-react.js",
+      "require": "./dist/cjs/lucide-react.js"
+    },
+    "./icons/*": {
+      "types": "./dist/esm/icons/*.d.ts",
+      "import": "./dist/esm/icons/*.js",
+      "require": "./dist/cjs/icons/*.js"
+    },
+    "./untitled": {
+      "types": "./untitled/dist/lucide-react-untitled.d.ts",
+      "import": "./untitled/dist/esm/lucide-react-untitled.js",
+      "require": "./untitled/dist/cjs/lucide-react-untitled.js"
+    },
+    "./untitled/icons/*": {
+      "types": "./untitled/dist/esm/icons/*.d.ts",
+      "import": "./untitled/dist/esm/icons/*.js",
+      "require": "./untitled/dist/cjs/icons/*.js"
+    },
+    "./gmg": {
+      "types": "./gmg/dist/lucide-react-gmg.d.ts",
+      "import": "./gmg/dist/esm/lucide-react-gmg.js",
+      "require": "./gmg/dist/cjs/lucide-react-gmg.js"
+    },
+    "./gmg/icons/*": {
+      "types": "./gmg/dist/esm/icons/*.d.ts",
+      "import": "./gmg/dist/esm/icons/*.js",
+      "require": "./gmg/dist/cjs/icons/*.js"
+    }
+  },
   "files": [
     "dist",
+    "untitled/dist",
+    "gmg/dist",
     "dynamic.mjs",
     "dynamic.js.map",
     "dynamic.d.ts",
@@ -39,11 +78,18 @@
     "dynamicIconImports.d.ts"
   ],
   "scripts": {
-    "build": "pnpm clean && pnpm copy:license && pnpm build:icons && pnpm typecheck && pnpm build:bundles",
+    "build": "pnpm setup:subpaths && pnpm clean && pnpm copy:license && pnpm build:main && pnpm build:untitled && pnpm build:gmg && pnpm typecheck && pnpm build:bundles",
+    "setup:subpaths": "mkdir -p untitled/src gmg/src",
     "copy:license": "cp ../../LICENSE ./LICENSE",
-    "clean": "rm -rf dist && rm -rf stats && rm -rf ./src/icons/*.ts && rm -f dynamic.* && rm -f dynamicIconImports.d.ts",
-    "build:icons": "build-icons --output=./src --templateSrc=./scripts/exportTemplate.mts --renderUniqueKey --withAliases --withDynamicImports --separateAliasesFile --aliasesFileExtension=.ts --iconFileExtension=.ts --exportFileName=index.ts",
+    "clean": "rm -rf dist && rm -rf stats && rm -rf untitled/dist && rm -rf gmg/dist && rm -rf ./src/icons/*.ts && rm -rf untitled/src/icons && rm -rf gmg/src/icons && rm -f dynamic.* && rm -f dynamicIconImports.d.ts",
+    "build:main": "build-icons --output=./src --templateSrc=./scripts/exportTemplate.mts --renderUniqueKey --withAliases --withDynamicImports --separateAliasesFile --aliasesFileExtension=.ts --iconFileExtension=.ts --exportFileName=index.ts",
+    "build:untitled": "pnpm build:icons:untitled && pnpm build:bundles:untitled",
+    "build:gmg": "pnpm build:icons:gmg && pnpm build:bundles:gmg",
+    "build:icons:untitled": "build-icons --iconsDir=../../icons/untitled --output=./untitled/src --templateSrc=./scripts/exportTemplateSubpath.mts --renderUniqueKey --withAliases --separateAliasesFile --aliasesFileExtension=.ts --iconFileExtension=.ts --exportFileName=index.ts",
+    "build:icons:gmg": "build-icons --iconsDir=../../icons/gmg --output=./gmg/src --templateSrc=./scripts/exportTemplateSubpath.mts --renderUniqueKey --withAliases --separateAliasesFile --aliasesFileExtension=.ts --iconFileExtension=.ts --exportFileName=index.ts",
     "build:bundles": "rollup -c ./rollup.config.mjs",
+    "build:bundles:untitled": "rollup -c ./rollup.untitled.config.mjs",
+    "build:bundles:gmg": "rollup -c ./rollup.gmg.config.mjs",
     "typecheck": "tsc",
     "typecheck:watch": "tsc -w",
     "test": "pnpm build:icons && vitest run",

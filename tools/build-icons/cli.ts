@@ -31,12 +31,13 @@ interface CliArguments {
   aliasesFileExtension?: string;
   aliasImportFileExtension?: string;
   pretty?: boolean;
+  iconsDir?: string;
   output: string | undefined;
 }
 
 const cliArguments = getArgumentOptions(process.argv.slice(2)) as unknown as CliArguments;
 
-const ICONS_DIR = path.resolve(process.cwd(), '../../icons');
+const ICONS_DIR = path.resolve(process.cwd(), cliArguments.iconsDir || '../../icons');
 const OUTPUT_DIR = path.resolve(process.cwd(), cliArguments.output || '../build');
 
 if (!fs.existsSync(OUTPUT_DIR)) {
@@ -61,6 +62,7 @@ const {
   aliasesFileExtension = '.js',
   aliasImportFileExtension = '',
   pretty = true,
+  iconsDir,
 } = cliArguments;
 
 async function buildIcons() {
@@ -122,7 +124,7 @@ async function buildIcons() {
     path.join(OUTPUT_DIR, 'icons'),
     icons,
     exportModuleNameCasing,
-    importImportFileExtension,
+    importImportFileExtension
   );
 }
 

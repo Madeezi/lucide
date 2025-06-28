@@ -48,7 +48,7 @@ function generateIconFiles({
     ]);
 
     const getSvg = () => readSvg(`${iconName}.svg`, iconsDir);
-    const { deprecated = false, toBeRemovedInVersion = undefined } = iconMetaData[iconName];
+    const { deprecated = false, toBeRemovedInVersion = undefined } = iconMetaData[iconName] || {};
     const deprecationReason = deprecated
       ? deprecationReasonTemplate(iconMetaData[iconName]?.deprecationReason ?? '', {
           componentName,
@@ -81,7 +81,7 @@ function generateIconFiles({
       const output = `export { default } from "./${iconName}${iconFileExtension}";\n`;
       const location = path.join(
         iconsDistDirectory,
-        `${iconName}${separateIconFileExportExtension ?? iconFileExtension}`,
+        `${iconName}${separateIconFileExportExtension ?? iconFileExtension}`
       );
 
       await fs.promises.writeFile(location, output, 'utf-8');

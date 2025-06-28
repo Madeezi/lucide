@@ -29,6 +29,7 @@ export type AliasDeprecation = {
 export type IconDeprecationReason = 'icon.brand' | '';
 
 export type IconMetadataBase = {
+  $schema?: string;
   toBeRemovedInVersion?: string;
   categories?: string[];
   aliases?: (string | AliasDeprecation)[];
