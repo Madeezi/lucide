@@ -92,7 +92,7 @@
     "build:bundles:gmg": "rollup -c ./rollup.gmg.config.mjs",
     "typecheck": "tsc",
     "typecheck:watch": "tsc -w",
-    "test": "pnpm build:icons && vitest run",
+    "test": "pnpm build:main && vitest run",
     "test:watch": "vitest watch",
     "version": "pnpm version --git-tag-version=false"
   },
