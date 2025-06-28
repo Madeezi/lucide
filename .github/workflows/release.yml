@@ -44,7 +44,7 @@ jobs:
       matrix:
         include:
           - package: 'lucide-react'
-            publish_name: '@madeezi/lucide'
+            publish_name: '@madeezi/lucide-react'
           - package: 'lucide-react-native'
             publish_name: '@madeezi/lucide-react-native'
     steps:
