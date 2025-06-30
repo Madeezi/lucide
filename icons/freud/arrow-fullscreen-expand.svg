@@ -6,8 +6,6 @@
   fill="none"
   stroke="currentColor"
   stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
 >
   <path d="M13 11L19 5"/>
   <path d="M5 19L11 13"/>

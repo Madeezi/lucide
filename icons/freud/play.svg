@@ -6,8 +6,6 @@
   fill="none"
   stroke="currentColor"
   stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
 >
   <path d="M16.7297 10.2391L12.8964 8.17498C10.2315 6.74003 7 8.67017 7 11.6969V12.3031C7 15.3298 10.2315 17.26 12.8964 15.825L16.7297 13.7609C18.1321 13.0058 18.1321 10.9942 16.7297 10.2391Z"/>
 </svg>

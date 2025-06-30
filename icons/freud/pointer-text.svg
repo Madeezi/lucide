@@ -6,8 +6,6 @@
   fill="none"
   stroke="currentColor"
   stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
 >
   <path d="M18 4H16C13.7909 4 12 5.79086 12 8V16C12 18.2091 13.7909 20 16 20H18"/>
   <path d="M6 4H8C10.2091 4 12 5.79086 12 8V16C12 18.2091 10.2091 20 8 20H6"/>

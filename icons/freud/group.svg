@@ -6,8 +6,6 @@
   fill="none"
   stroke="currentColor"
   stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
 >
   <path d="M21 14C21 13.3434 20.8707 12.6932 20.6194 12.0866C20.3681 11.48 19.9998 10.9288 19.5355 10.4645C19.0712 10.0002 18.52 9.63188 17.9134 9.3806C17.3068 9.12933 16.6566 9 16 9"/>
   <rect x="14" y="5" width="4" height="4" rx="2"/>

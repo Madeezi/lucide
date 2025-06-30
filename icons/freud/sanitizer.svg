@@ -6,8 +6,6 @@
   fill="none"
   stroke="currentColor"
   stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
 >
   <circle cx="12" cy="15" r="6"/>
   <path d="M9 4L15 4C17.2091 4 19 5.79086 19 8V8"/>
