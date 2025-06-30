@@ -1,18 +1,18 @@
-# Lucide React Subpath Packages
+# Lucide React Native Subpath Packages
 
-Lucide React supports subpath packages for organizing icons into different collections.
+Lucide React Native supports subpath packages for organizing icons into different collections.
 
 ## Available Subpaths
 
-### `lucide-react/untitled`
+### `lucide-react-native/untitled`
 
 Contains untitled icons from the `/icons/untitled/` directory.
 
-### `lucide-react/gmg`
+### `lucide-react-native/gmg`
 
 Contains GMG project specific icons from the `/icons/gmg/` directory.
 
-### `lucide-react/freud`
+### `lucide-react-native/freud`
 
 Contains Freud icons from the `/icons/freud/` directory.
 
@@ -22,22 +22,22 @@ Contains Freud icons from the `/icons/freud/` directory.
 
 ```javascript
 // Import from untitled collection
-import { Mail, Search, User } from 'lucide-react/untitled';
+import { Mail, Search, User } from 'lucide-react-native/untitled';
 
-// Import from GMG collection
-import { Bell, Heart, Star } from 'lucide-react/gmg';
+// Import from GMG collection  
+import { Bell, Heart, Star } from 'lucide-react-native/gmg';
 
 // Import from Freud collection
-import { Brain, Stethoscope, Pill } from 'lucide-react/freud';
+import { Brain, Stethoscope, Pill } from 'lucide-react-native/freud';
 
-// Use in React components
+// Use in React Native components
 function MyComponent() {
   return (
-    <div>
+    <View>
       <Mail size={24} />
       <Bell size={24} />
       <Brain size={24} />
-    </div>
+    </View>
   );
 }
 ```
@@ -46,9 +46,9 @@ function MyComponent() {
 
 ```javascript
 // Import specific icons from subpaths
-import Mail from 'lucide-react/untitled/icons/mail';
-import Bell from 'lucide-react/gmg/icons/bell';
-import Brain from 'lucide-react/freud/icons/brain';
+import Mail from 'lucide-react-native/untitled/icons/mail';
+import Bell from 'lucide-react-native/gmg/icons/bell';
+import Brain from 'lucide-react-native/freud/icons/brain';
 ```
 
 ## TypeScript Support
@@ -56,9 +56,9 @@ import Brain from 'lucide-react/freud/icons/brain';
 All subpath packages include full TypeScript definitions:
 
 ```typescript
-import { Mail, Search } from 'lucide-react/untitled';
-import { Brain } from 'lucide-react/freud';
-import { LucideProps } from 'lucide-react';
+import { Mail, Search } from 'lucide-react-native/untitled';
+import { Brain } from 'lucide-react-native/freud';
+import { LucideProps } from 'lucide-react-native';
 
 const MyIcon: React.FC<LucideProps> = (props) => {
   return <Mail {...props} />;
@@ -78,7 +78,6 @@ pnpm build
 ```
 
 This will:
-
 1. Generate icons from `/icons/untitled/`, `/icons/gmg/`, and `/icons/freud/` directories
 2. Create TypeScript definitions
 3. Build ESM and CommonJS bundles
@@ -94,27 +93,34 @@ This will:
 ## File Structure
 
 ```
-packages/lucide-react/
+packages/lucide-react-native/
 ├── untitled/
 │   ├── dist/
-│   │   ├── esm/lucide-react-untitled.js
-│   │   ├── cjs/lucide-react-untitled.js
-│   │   └── lucide-react-untitled.d.ts
+│   │   ├── esm/lucide-react-native-untitled.js
+│   │   ├── cjs/lucide-react-native-untitled.js
+│   │   └── lucide-react-native-untitled.d.ts
 │   └── src/
 │       └── icons/
 ├── gmg/
 │   ├── dist/
-│   │   ├── esm/lucide-react-gmg.js
-│   │   ├── cjs/lucide-react-gmg.js
-│   │   └── lucide-react-gmg.d.ts
+│   │   ├── esm/lucide-react-native-gmg.js
+│   │   ├── cjs/lucide-react-native-gmg.js
+│   │   └── lucide-react-native-gmg.d.ts
 │   └── src/
 │       └── icons/
 ├── freud/
 │   ├── dist/
-│   │   ├── esm/lucide-react-freud.js
-│   │   ├── cjs/lucide-react-freud.js
-│   │   └── lucide-react-freud.d.ts
+│   │   ├── esm/lucide-react-native-freud.js
+│   │   ├── cjs/lucide-react-native-freud.js
+│   │   └── lucide-react-native-freud.d.ts
 │   └── src/
 │       └── icons/
 └── package.json (with exports configuration)
 ```
+
+## React Native Specific Notes
+
+- All icons are compatible with React Native SVG
+- No additional setup required beyond installing `react-native-svg`
+- Icons work with both Expo and bare React Native projects
+- Supports all React Native platforms (iOS, Android, Web)

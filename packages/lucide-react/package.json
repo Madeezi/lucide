@@ -64,12 +64,23 @@
       "types": "./gmg/dist/esm/icons/*.d.ts",
       "import": "./gmg/dist/esm/icons/*.js",
       "require": "./gmg/dist/cjs/icons/*.js"
+    },
+    "./freud": {
+      "types": "./freud/dist/lucide-react-freud.d.ts",
+      "import": "./freud/dist/esm/lucide-react-freud.js",
+      "require": "./freud/dist/cjs/lucide-react-freud.js"
+    },
+    "./freud/icons/*": {
+      "types": "./freud/dist/esm/icons/*.d.ts",
+      "import": "./freud/dist/esm/icons/*.js",
+      "require": "./freud/dist/cjs/icons/*.js"
     }
   },
   "files": [
     "dist",
     "untitled/dist",
     "gmg/dist",
+    "freud/dist",
     "dynamic.mjs",
     "dynamic.js.map",
     "dynamic.d.ts",
@@ -78,18 +89,21 @@
     "dynamicIconImports.d.ts"
   ],
   "scripts": {
-    "build": "pnpm setup:subpaths && pnpm clean && pnpm copy:license && pnpm build:main && pnpm build:untitled && pnpm build:gmg && pnpm typecheck && pnpm build:bundles",
-    "setup:subpaths": "mkdir -p untitled/src gmg/src",
+    "build": "pnpm setup:subpaths && pnpm clean && pnpm copy:license && pnpm build:main && pnpm build:untitled && pnpm build:gmg && pnpm build:freud && pnpm typecheck && pnpm build:bundles",
+    "setup:subpaths": "mkdir -p untitled/src gmg/src freud/src",
     "copy:license": "cp ../../LICENSE ./LICENSE",
-    "clean": "rm -rf dist && rm -rf stats && rm -rf untitled/dist && rm -rf gmg/dist && rm -rf ./src/icons/*.ts && rm -rf untitled/src/icons && rm -rf gmg/src/icons && rm -f dynamic.* && rm -f dynamicIconImports.d.ts",
+    "clean": "rm -rf dist && rm -rf stats && rm -rf untitled/dist && rm -rf gmg/dist && rm -rf freud/dist && rm -rf ./src/icons/*.ts && rm -rf untitled/src/icons && rm -rf gmg/src/icons && rm -rf freud/src/icons && rm -f dynamic.* && rm -f dynamicIconImports.d.ts",
     "build:main": "build-icons --output=./src --templateSrc=./scripts/exportTemplate.mts --renderUniqueKey --withAliases --withDynamicImports --separateAliasesFile --aliasesFileExtension=.ts --iconFileExtension=.ts --exportFileName=index.ts",
     "build:untitled": "pnpm build:icons:untitled && pnpm build:bundles:untitled",
     "build:gmg": "pnpm build:icons:gmg && pnpm build:bundles:gmg",
+    "build:freud": "pnpm build:icons:freud && pnpm build:bundles:freud",
     "build:icons:untitled": "build-icons --iconsDir=../../icons/untitled --output=./untitled/src --templateSrc=./scripts/exportTemplateSubpath.mts --renderUniqueKey --withAliases --separateAliasesFile --aliasesFileExtension=.ts --iconFileExtension=.ts --exportFileName=index.ts",
     "build:icons:gmg": "build-icons --iconsDir=../../icons/gmg --output=./gmg/src --templateSrc=./scripts/exportTemplateSubpath.mts --renderUniqueKey --withAliases --separateAliasesFile --aliasesFileExtension=.ts --iconFileExtension=.ts --exportFileName=index.ts",
+    "build:icons:freud": "build-icons --iconsDir=../../icons/freud --output=./freud/src --templateSrc=./scripts/exportTemplateSubpath.mts --renderUniqueKey --withAliases --separateAliasesFile --aliasesFileExtension=.ts --iconFileExtension=.ts --exportFileName=index.ts",
     "build:bundles": "rollup -c ./rollup.config.mjs",
     "build:bundles:untitled": "rollup -c ./rollup.untitled.config.mjs",
     "build:bundles:gmg": "rollup -c ./rollup.gmg.config.mjs",
+    "build:bundles:freud": "rollup -c ./rollup.freud.config.mjs",
     "typecheck": "tsc",
     "typecheck:watch": "tsc -w",
     "test": "pnpm build:main && vitest run",
